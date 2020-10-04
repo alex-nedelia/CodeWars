@@ -33,7 +33,6 @@ let maze = [
 	[ 1, 0, 0, 0, 0, 0, 1 ],
 	[ 1, 2, 1, 0, 1, 0, 1 ]
 ];
-const directions = [ 'N', 'N', 'N', 'W', 'W' ];
 
 function mazeRunner(maze, directions) {
 	// Code here
@@ -50,30 +49,36 @@ function mazeRunner(maze, directions) {
 	}
 
 	const move = (start, directions, maze) => {
-		let finalStage;
+		let finalStage, cell;
 		let curPosition = start;
 		for (let i = 0; i < directions.length; i++) {
 			let coord = directions[i];
 			if (coord === 'N') {
-				curPosition = [ curPosition[0] - 1, curPosition[1] ];
+				curPosition[0]--;
 			} else if (coord === 'S') {
-				curPosition = [ curPosition[0] + 1, curPosition[1] ];
+				curPosition[0]++;
 			} else if (coord === 'E') {
-				curPosition = [ curPosition[0], curPosition[1] + 1 ];
+				curPosition[1]++;
 			} else if (coord === 'W') {
-				curPosition = [ curPosition[0], curPosition[1] - 1 ];
+				curPosition[1]--;
 			}
 
-			let elem = maze[curPosition[0]][curPosition[1]];
-
-			if (elem == 1 || elem == undefined) {
+			if (curPosition[0] < maze.length && curPosition[1] < maze.length) {
+				cell = maze[curPosition[0]][curPosition[1]];
+			} else {
 				finalStage = 'Dead';
 				break;
-			} else if (elem == 3) {
+			}
+
+			if (cell == 1 || cell == undefined) {
+				finalStage = 'Dead';
+				break;
+			} else if (cell == 3) {
 				finalStage = 'Finish';
 				break;
-			} else if (i == directions.length - 1 && elem == 0) {
+			} else if (i >= directions.length - 1 && cell == 0) {
 				finalStage = 'Lost';
+				break;
 			}
 		}
 		return finalStage;
@@ -81,5 +86,11 @@ function mazeRunner(maze, directions) {
 	return move(start, directions, maze);
 }
 
-console.log(mazeRunner(maze, directions));
-// console.log(mazeRunner(maze, [ 'N', 'N', 'N', 'N', 'N', 'E', 'E', 'E', 'E', 'E' ]));
+console.log(mazeRunner(maze, [ 'N', 'N', 'N', 'N', 'N', 'E', 'E', 'E', 'E', 'E' ]));
+console.log(mazeRunner(maze, [ 'N', 'N', 'N', 'N', 'N', 'E', 'E', 'S', 'S', 'E', 'E', 'N', 'N', 'E' ]));
+console.log(mazeRunner(maze, [ 'N', 'N', 'N', 'N', 'N', 'E', 'E', 'E', 'E', 'E', 'W', 'W' ]));
+
+console.log(mazeRunner(maze, [ 'N', 'N', 'N', 'W', 'W' ]));
+console.log(mazeRunner(maze, [ 'N', 'N', 'N', 'N', 'N', 'E', 'E', 'S', 'S', 'S', 'S', 'S', 'S' ]));
+
+console.log(mazeRunner(maze, [ 'N', 'E', 'E', 'E', 'E' ]));

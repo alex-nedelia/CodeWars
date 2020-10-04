@@ -12,6 +12,7 @@ function encrypt(text, n)
 function decrypt(encryptedText, n)
 */
 
+/*
 function encrypt(text, n) {
 	const headStr = [];
 	const endStr = [];
@@ -29,6 +30,30 @@ function encrypt(text, n) {
 	n--;
 
 	let finalString = [ ...headStr, ...endStr ].join('');
+
+	if (n > 0) {
+		return encrypt(finalString, n);
+	} else return finalString;
+}
+*/
+
+function encrypt(text, n) {
+	if (n <= 0) return text;
+	if (text === '' || text == null) return text;
+
+	const stringList = text.split('').reduce((acc, char, index) => {
+		if ((index + 1) % 2 == 0) {
+			acc.head.push(char);
+		} else {
+			acc.tail.push(char);
+		}
+
+		return acc;
+	}, { tail: [], head: [] });
+
+	let finalString = [ ...stringList.head, ...stringList.tail ].join('');
+
+	n--;
 
 	if (n > 0) {
 		return encrypt(finalString, n);
@@ -59,12 +84,12 @@ function decrypt(encryptedText, n) {
 }
 
 // console.log(encrypt('This is a test!', 0));
-// console.log(encrypt('This is a test!', 1));
+console.log(encrypt('This is a test!', 1));
 // console.log(encrypt('This is a test!', 2));
 // console.log(encrypt('This is a test!', 3));
 // console.log(encrypt('This is a test!', 4));
 
-// decrypt('This is a test!', 0);
-console.log(decrypt('hsi  etTi sats!', 1));
-console.log(decrypt('s eT ashi tist!', 2));
-console.log(decrypt(' Tah itse sits!', 3));
+// // decrypt('This is a test!', 0);
+// console.log(decrypt('hsi  etTi sats!', 1));
+// console.log(decrypt('s eT ashi tist!', 2));
+// console.log(decrypt(' Tah itse sits!', 3));
